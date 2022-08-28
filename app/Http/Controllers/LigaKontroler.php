@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\LigaResurs;
 use App\Models\Liga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LigaKontroler extends Controller
 {
@@ -38,7 +39,23 @@ class LigaKontroler extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'drzava' => 'required|string',
+            'naziv' => 'required|string',
+            'broj_klubova' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['Error!', $validator->errors()]);
+        }
+
+        $liga = Liga::create([
+            'drzava' => $request->drzava,
+            'naziv' => $request->naziv,
+            'broj_klubova' => $request->broj_klubova
+        ]);
+
+        return response()->json(['Liga je kreirana.', new LigaResurs($liga)]);
     }
 
     /**
@@ -83,6 +100,8 @@ class LigaKontroler extends Controller
      */
     public function destroy(Liga $liga)
     {
-        //
+        $liga->delete();
+
+        return response()->json(['Liga je obrisana.', new LigaResurs($liga)]);
     }
 }
