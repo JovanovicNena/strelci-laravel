@@ -11,6 +11,14 @@ class Klub extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'naziv',
+        'grad',
+        'predsednik',
+        'trener',
+        'liga_id'
+    ];
+
     public function liga()
     {
         return $this->belongsTo(Liga::class);
