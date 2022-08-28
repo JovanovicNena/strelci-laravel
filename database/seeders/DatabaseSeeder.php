@@ -13,6 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $ls = new LigaSeeder;
+        $ls->run();
+        $ks = new KlubSeeder;
+        $ks->run();
+        $ss = new StrelacSeeder;
+        $ss->run();
     }
 }
