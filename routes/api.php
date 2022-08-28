@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KlubKontroler;
 use App\Http\Controllers\LigaKontroler;
 use Illuminate\Http\Request;
@@ -16,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('liga', LigaKontroler::class)->only('index', 'show', 'store', 'destroy');
-Route::resource('klub', KlubKontroler::class)->only('index', 'show');
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
 
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::resource('liga', LigaKontroler::class)->only('index', 'show', 'store', 'destroy');
+    Route::resource('klub', KlubKontroler::class)->only('index', 'show');
+    Route::post('logout', [AuthController::class, 'logout']);
 });
